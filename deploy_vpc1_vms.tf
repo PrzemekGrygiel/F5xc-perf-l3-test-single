@@ -26,11 +26,6 @@ resource "aws_instance" "pg-vpc1-vm1" {
 while ! ping -c 1 -n -w 1 8.8.8.8 &> /dev/null;do  printf "%c" "."; sleep 5; done
 sudo apt update
 sudo apt install nginx wrk libsctp1 -y 
-echo $(uname -n) > /var/www/html/index.nginx-debian.html
-wget https://iperf.fr/download/ubuntu/libiperf0_3.9-1_amd64.deb
-wget https://iperf.fr/download/ubuntu/iperf3_3.9-1_amd64.deb
-sudo dpkg -i libiperf0_3.9-1_amd64.deb iperf3_3.9-1_amd64.deb
-rm libiperf0_3.9-1_amd64.deb iperf3_3.9-1_amd64.deb
 echo -e "net.core.rmem_max = 33554432\nnet.core.wmem_max = 33554432\nnet.ipv4.tcp_rmem = 4096 87380 33554432\nnet.ipv4.tcp_wmem = 4096 65536 33554432\nnet.core.netdev_max_backlog = 300000\nfs.file-max = 1048576\nnet.ipv4.tcp_tw_recycle = 1\nnet.ipv4.tcp_tw_reuse = 1\n"   >>  /etc/sysctl.conf 
 echo -e "*       soft    nofile  60000\n*       hard    nofile  120000" >> /etc/security/limits.conf
 echo -e "worker_rlimit_nofile 60000;" >> /etc/nginx/nginx.conf
@@ -42,7 +37,7 @@ sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-sin
 sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/html/135.html -O /var/www/html/135.html
 sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/html/15k.html -O /var/www/html/15k.html
 sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/html/37k.html -O /var/www/html/37k.html
-sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/html/91k.html -O /var/www/html/91.html
+sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/html/91k.html -O /var/www/html/91k.html
 sudo systemctl enable nginx
 sudo systemctl start nginx
 echo $(uname -n) > /var/www/html/index.nginx-debian.html
@@ -78,11 +73,6 @@ resource "aws_instance" "pg-vpc1-vm2" {
 while ! ping -c 1 -n -w 1 8.8.8.8 &> /dev/null;do  printf "%c" "."; sleep 5; done
 sudo apt update
 sudo apt install nginx wrk libsctp1 -y 
-echo $(uname -n) > /var/www/html/index.nginx-debian.html
-wget https://iperf.fr/download/ubuntu/libiperf0_3.9-1_amd64.deb
-wget https://iperf.fr/download/ubuntu/iperf3_3.9-1_amd64.deb
-sudo dpkg -i libiperf0_3.9-1_amd64.deb iperf3_3.9-1_amd64.deb
-rm libiperf0_3.9-1_amd64.deb iperf3_3.9-1_amd64.deb
 echo -e "net.core.rmem_max = 33554432\nnet.core.wmem_max = 33554432\nnet.ipv4.tcp_rmem = 4096 87380 33554432\nnet.ipv4.tcp_wmem = 4096 65536 33554432\nnet.core.netdev_max_backlog = 300000\nfs.file-max = 1048576\nnet.ipv4.tcp_tw_recycle = 1\nnet.ipv4.tcp_tw_reuse = 1\n"   >>  /etc/sysctl.conf 
 echo -e "*       soft    nofile  60000\n*       hard    nofile  120000" >> /etc/security/limits.conf
 echo -e "worker_rlimit_nofile 60000;" >> /etc/nginx/nginx.conf
@@ -94,7 +84,7 @@ sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-sin
 sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/html/135.html -O /var/www/html/135.html
 sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/html/15k.html -O /var/www/html/15k.html
 sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/html/37k.html -O /var/www/html/37k.html
-sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/html/91k.html -O /var/www/html/91.html
+sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/html/91k.html -O /var/www/html/91k.html
 sudo systemctl enable nginx
 sudo systemctl start nginx
 echo $(uname -n) > /var/www/html/index.nginx-debian.html
@@ -131,11 +121,6 @@ resource "aws_instance" "pg-vpc1-vm3" {
 while ! ping -c 1 -n -w 1 8.8.8.8 &> /dev/null;do  printf "%c" "."; sleep 5; done
 sudo apt update
 sudo apt install nginx wrk libsctp1 -y 
-echo $(uname -n) > /var/www/html/index.nginx-debian.html
-wget https://iperf.fr/download/ubuntu/libiperf0_3.9-1_amd64.deb
-wget https://iperf.fr/download/ubuntu/iperf3_3.9-1_amd64.deb
-sudo dpkg -i libiperf0_3.9-1_amd64.deb iperf3_3.9-1_amd64.deb
-rm libiperf0_3.9-1_amd64.deb iperf3_3.9-1_amd64.deb
 echo -e "net.core.rmem_max = 33554432\nnet.core.wmem_max = 33554432\nnet.ipv4.tcp_rmem = 4096 87380 33554432\nnet.ipv4.tcp_wmem = 4096 65536 33554432\nnet.core.netdev_max_backlog = 300000\nfs.file-max = 1048576\nnet.ipv4.tcp_tw_recycle = 1\nnet.ipv4.tcp_tw_reuse = 1\n"   >>  /etc/sysctl.conf 
 echo -e "*       soft    nofile  60000\n*       hard    nofile  120000" >> /etc/security/limits.conf
 echo -e "worker_rlimit_nofile 60000;" >> /etc/nginx/nginx.conf
@@ -147,7 +132,7 @@ sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-sin
 sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/html/135.html -O /var/www/html/135.html
 sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/html/15k.html -O /var/www/html/15k.html
 sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/html/37k.html -O /var/www/html/37k.html
-sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/html/91k.html -O /var/www/html/91.html
+sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/html/91k.html -O /var/www/html/91k.html
 sudo systemctl enable nginx
 sudo systemctl start nginx
 echo $(uname -n) > /var/www/html/index.nginx-debian.html

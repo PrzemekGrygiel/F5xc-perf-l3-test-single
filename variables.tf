@@ -15,7 +15,7 @@ variable "key_path" {
 }
 
 variable aws_instance_type {
-  default = "c5n.2xlarge"
+  default = "c5n.4xlarge"
 }
 
 variable vm_instance_type {
@@ -23,7 +23,7 @@ variable vm_instance_type {
 }
 
 variable projectPrefix {
-  default = "pg-perf-test-aug25-single-m"
+  default = "pg-perf-test-aug29-single-l"
 }
 
 # AWS 
