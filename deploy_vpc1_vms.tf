@@ -1,0 +1,182 @@
+resource "aws_instance" "pg-vpc1-vm1" {
+# TBD
+  ami                                  = data.aws_ami.ubuntu.id
+#  ami                                  = "ami-0892d3c7ee96c0bf7"
+  tenancy                              = "default"
+  ebs_optimized                        = false
+  disable_api_termination              = false
+  instance_initiated_shutdown_behavior = "stop"
+  instance_type                        = "${var.vm_instance_type}"
+  key_name                             = "${var.key_name}"
+  monitoring                           = false
+  vpc_security_group_ids               = [aws_security_group.pg-vpc1-allow-all-sg.id]
+  subnet_id                            = aws_subnet.pg-vpc1-workload-az-a-subnet.id
+  associate_public_ip_address          = true
+  private_ip                           = "${var.pg_vpc1_az_a_workload_vm_ip}"
+  source_dest_check                    = false
+  tags = {
+    Name = "${var.projectPrefix}-az-a-vm1"
+  }
+  connection {
+    user        = "ubuntu"
+    private_key = "${var.key_path}"
+  }
+  user_data = <<EOF
+#!/bin/bash
+while ! ping -c 1 -n -w 1 8.8.8.8 &> /dev/null;do  printf "%c" "."; sleep 5; done
+sudo apt update
+sudo apt install nginx  libsctp1 -y 
+echo $(uname -n) > /var/www/html/index.nginx-debian.html
+wget https://iperf.fr/download/ubuntu/libiperf0_3.9-1_amd64.deb
+wget https://iperf.fr/download/ubuntu/iperf3_3.9-1_amd64.deb
+sudo dpkg -i libiperf0_3.9-1_amd64.deb iperf3_3.9-1_amd64.deb
+rm libiperf0_3.9-1_amd64.deb iperf3_3.9-1_amd64.deb
+echo -e "net.core.rmem_max = 33554432\nnet.core.wmem_max = 33554432\nnet.ipv4.tcp_rmem = 4096 87380 33554432\nnet.ipv4.tcp_wmem = 4096 65536 33554432\nnet.core.netdev_max_backlog = 300000\nfs.file-max = 1048576\nnet.ipv4.tcp_tw_recycle = 1\nnet.ipv4.tcp_tw_reuse = 1\n"   >>  /etc/sysctl.conf 
+echo -e "*       soft    nofile  60000\n*       hard    nofile  120000" >> /etc/security/limits.conf
+echo -e "worker_rlimit_nofile 60000;" >> /etc/nginx/nginx.conf
+sed -i 's/worker_connections 20000;/worker_connections 20000;' /etc/nginx/nginx.conf
+sed -i 's/768/20000/' /etc/nginx/nginx.conf
+sysctl --system
+sleep 10
+sudo truncate -s 135 /var/www/html/135.html
+sudo truncate -s 15k /var/www/html/15k.html
+sudo truncate -s 37k /var/www/html/37k.html
+sudo truncate -s 91k /var/www/html/91k.html
+sudo systemctl enable nginx
+sudo systemctl start nginx
+echo $(uname -n) > /var/www/html/index.nginx-debian.html
+EOF
+#depends_on = [time_sleep.wait_15_min_1]
+}
+
+resource "aws_instance" "pg-vpc1-vm2" {
+# TBD
+  ami                                  = data.aws_ami.ubuntu.id
+#  ami                                  = "ami-0892d3c7ee96c0bf7"
+  tenancy                              = "default"
+  ebs_optimized                        = false
+  disable_api_termination              = false
+  instance_initiated_shutdown_behavior = "stop"
+  instance_type                        = "${var.vm_instance_type}"
+  key_name                             = "${var.key_name}"
+  monitoring                           = false
+  vpc_security_group_ids               = [aws_security_group.pg-vpc1-allow-all-sg.id]
+  subnet_id                            = aws_subnet.pg-vpc1-workload-az-a-subnet.id
+  associate_public_ip_address          = true
+  private_ip                           = "10.130.1.101"
+  source_dest_check                    = false
+  tags = {
+    Name = "${var.projectPrefix}-az-a-vm2"
+  }
+  connection {
+    user        = "ubuntu"
+    private_key = "${var.key_path}"
+  }
+  user_data = <<EOF
+#!/bin/bash
+while ! ping -c 1 -n -w 1 8.8.8.8 &> /dev/null;do  printf "%c" "."; sleep 5; done
+sudo apt update
+sudo apt install nginx  libsctp1 -y 
+echo $(uname -n) > /var/www/html/index.nginx-debian.html
+wget https://iperf.fr/download/ubuntu/libiperf0_3.9-1_amd64.deb
+wget https://iperf.fr/download/ubuntu/iperf3_3.9-1_amd64.deb
+sudo dpkg -i libiperf0_3.9-1_amd64.deb iperf3_3.9-1_amd64.deb
+rm libiperf0_3.9-1_amd64.deb iperf3_3.9-1_amd64.deb
+echo -e "net.core.rmem_max = 33554432\nnet.core.wmem_max = 33554432\nnet.ipv4.tcp_rmem = 4096 87380 33554432\nnet.ipv4.tcp_wmem = 4096 65536 33554432\nnet.core.netdev_max_backlog = 300000\nfs.file-max = 1048576\nnet.ipv4.tcp_tw_recycle = 1\nnet.ipv4.tcp_tw_reuse = 1\n"   >>  /etc/sysctl.conf 
+echo -e "*       soft    nofile  60000\n*       hard    nofile  120000" >> /etc/security/limits.conf
+echo -e "worker_rlimit_nofile 60000;" >> /etc/nginx/nginx.conf
+sed -i 's/worker_connections 20000;/worker_connections 20000;' /etc/nginx/nginx.conf
+sed -i 's/768/20000/' /etc/nginx/nginx.conf
+sysctl --system
+sleep 10
+sudo truncate -s 135 /var/www/html/135.html
+sudo truncate -s 15k /var/www/html/15k.html
+sudo truncate -s 37k /var/www/html/37k.html
+sudo truncate -s 91k /var/www/html/91k.html
+sudo systemctl enable nginx
+sudo systemctl start nginx
+echo $(uname -n) > /var/www/html/index.nginx-debian.html
+EOF
+#depends_on = [time_sleep.wait_15_min_1]
+}
+
+
+resource "aws_instance" "pg-vpc1-vm3" {
+# TBD
+  ami                                  = data.aws_ami.ubuntu.id
+#  ami                                  = "ami-0892d3c7ee96c0bf7"
+  tenancy                              = "default"
+  ebs_optimized                        = false
+  disable_api_termination              = false
+  instance_initiated_shutdown_behavior = "stop"
+  instance_type                        = "${var.vm_instance_type}"
+  key_name                             = "${var.key_name}"
+  monitoring                           = false
+  vpc_security_group_ids               = [aws_security_group.pg-vpc1-allow-all-sg.id]
+  subnet_id                            = aws_subnet.pg-vpc1-workload-az-a-subnet.id
+  associate_public_ip_address          = true
+  private_ip                           = "10.130.1.102"
+  source_dest_check                    = false
+  tags = {
+    Name = "${var.projectPrefix}-az-a-vm3"
+  }
+  connection {
+    user        = "ubuntu"
+    private_key = "${var.key_path}"
+  }
+  user_data = <<EOF
+#!/bin/bash
+while ! ping -c 1 -n -w 1 8.8.8.8 &> /dev/null;do  printf "%c" "."; sleep 5; done
+sudo apt update
+sudo apt install nginx wrk libsctp1 -y 
+echo $(uname -n) > /var/www/html/index.nginx-debian.html
+wget https://iperf.fr/download/ubuntu/libiperf0_3.9-1_amd64.deb
+wget https://iperf.fr/download/ubuntu/iperf3_3.9-1_amd64.deb
+sudo dpkg -i libiperf0_3.9-1_amd64.deb iperf3_3.9-1_amd64.deb
+rm libiperf0_3.9-1_amd64.deb iperf3_3.9-1_amd64.deb
+echo -e "net.core.rmem_max = 33554432\nnet.core.wmem_max = 33554432\nnet.ipv4.tcp_rmem = 4096 87380 33554432\nnet.ipv4.tcp_wmem = 4096 65536 33554432\nnet.core.netdev_max_backlog = 300000\nfs.file-max = 1048576\nnet.ipv4.tcp_tw_recycle = 1\nnet.ipv4.tcp_tw_reuse = 1\n"   >>  /etc/sysctl.conf 
+echo -e "*       soft    nofile  60000\n*       hard    nofile  120000" >> /etc/security/limits.conf
+echo -e "worker_rlimit_nofile 60000;" >> /etc/nginx/nginx.conf
+sed -i 's/worker_connections 20000;/worker_connections 20000;' /etc/nginx/nginx.conf
+sed -i 's/768/20000/' /etc/nginx/nginx.conf
+sysctl --system
+sleep 10
+sudo truncate -s 135 /var/www/html/135.html
+sudo truncate -s 15k /var/www/html/15k.html
+sudo truncate -s 37k /var/www/html/37k.html
+sudo truncate -s 91k /var/www/html/91k.html
+sudo systemctl enable nginx
+sudo systemctl start nginx
+echo $(uname -n) > /var/www/html/index.nginx-debian.html
+EOF
+#depends_on = [time_sleep.wait_15_min_1]
+}
+
+resource "aws_instance" "pg-vpc1-jump" {
+  ami                                  = data.aws_ami.ubuntu.id
+  tenancy                              = "default"
+  ebs_optimized                        = false
+  disable_api_termination              = false
+  instance_initiated_shutdown_behavior = "stop"
+  instance_type                        = "${var.vm_instance_type}"
+  key_name                             = "${var.key_name}"
+  monitoring                           = false
+  vpc_security_group_ids               = [aws_security_group.pg-vpc1-external-sg.id]
+  subnet_id                            = aws_subnet.pg-vpc1-external-subnet.id
+  associate_public_ip_address          = true
+  source_dest_check                    = false
+  tags = {
+    Name = "${var.projectPrefix}-vpc1-jump"
+  }
+  connection {
+    user        = "ubuntu"
+    private_key = "${var.key_path}"
+  }
+  user_data = <<EOF
+#!/bin/bash
+while ! ping -c 1 -n -w 1 8.8.8.8 &> /dev/null;do  printf "%c" "."; sleep 5; done
+snap install docker
+systemctl enable snap.docker.dockerd
+systemctl start snap.docker.dockerd
+EOF
+}
