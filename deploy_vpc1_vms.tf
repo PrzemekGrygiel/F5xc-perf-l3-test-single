@@ -25,7 +25,7 @@ resource "aws_instance" "pg-vpc1-vm1" {
 #!/bin/bash
 while ! ping -c 1 -n -w 1 8.8.8.8 &> /dev/null;do  printf "%c" "."; sleep 5; done
 sudo apt update
-sudo apt install nginx  libsctp1 -y 
+sudo apt install nginx wrk libsctp1 -y 
 echo $(uname -n) > /var/www/html/index.nginx-debian.html
 wget https://iperf.fr/download/ubuntu/libiperf0_3.9-1_amd64.deb
 wget https://iperf.fr/download/ubuntu/iperf3_3.9-1_amd64.deb
@@ -38,10 +38,11 @@ sed -i 's/worker_connections 20000;/worker_connections 20000;' /etc/nginx/nginx.
 sed -i 's/768/20000/' /etc/nginx/nginx.conf
 sysctl --system
 sleep 10
-sudo truncate -s 135 /var/www/html/135.html
-sudo truncate -s 15k /var/www/html/15k.html
-sudo truncate -s 37k /var/www/html/37k.html
-sudo truncate -s 91k /var/www/html/91k.html
+sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/responses_code.lua -O /root/responses_code.lua
+sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/html/135.html -O /var/www/html/135.html
+sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/html/15k.html -O /var/www/html/15k.html
+sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/html/37k.html -O /var/www/html/37k.html
+sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/html/91k.html -O /var/www/html/91.html
 sudo systemctl enable nginx
 sudo systemctl start nginx
 echo $(uname -n) > /var/www/html/index.nginx-debian.html
@@ -76,7 +77,7 @@ resource "aws_instance" "pg-vpc1-vm2" {
 #!/bin/bash
 while ! ping -c 1 -n -w 1 8.8.8.8 &> /dev/null;do  printf "%c" "."; sleep 5; done
 sudo apt update
-sudo apt install nginx  libsctp1 -y 
+sudo apt install nginx wrk libsctp1 -y 
 echo $(uname -n) > /var/www/html/index.nginx-debian.html
 wget https://iperf.fr/download/ubuntu/libiperf0_3.9-1_amd64.deb
 wget https://iperf.fr/download/ubuntu/iperf3_3.9-1_amd64.deb
@@ -89,10 +90,11 @@ sed -i 's/worker_connections 20000;/worker_connections 20000;' /etc/nginx/nginx.
 sed -i 's/768/20000/' /etc/nginx/nginx.conf
 sysctl --system
 sleep 10
-sudo truncate -s 135 /var/www/html/135.html
-sudo truncate -s 15k /var/www/html/15k.html
-sudo truncate -s 37k /var/www/html/37k.html
-sudo truncate -s 91k /var/www/html/91k.html
+sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/responses_code.lua -O /root/responses_code.lua
+sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/html/135.html -O /var/www/html/135.html
+sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/html/15k.html -O /var/www/html/15k.html
+sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/html/37k.html -O /var/www/html/37k.html
+sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/html/91k.html -O /var/www/html/91.html
 sudo systemctl enable nginx
 sudo systemctl start nginx
 echo $(uname -n) > /var/www/html/index.nginx-debian.html
@@ -141,10 +143,11 @@ sed -i 's/worker_connections 20000;/worker_connections 20000;' /etc/nginx/nginx.
 sed -i 's/768/20000/' /etc/nginx/nginx.conf
 sysctl --system
 sleep 10
-sudo truncate -s 135 /var/www/html/135.html
-sudo truncate -s 15k /var/www/html/15k.html
-sudo truncate -s 37k /var/www/html/37k.html
-sudo truncate -s 91k /var/www/html/91k.html
+sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/responses_code.lua -O /root/responses_code.lua
+sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/html/135.html -O /var/www/html/135.html
+sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/html/15k.html -O /var/www/html/15k.html
+sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/html/37k.html -O /var/www/html/37k.html
+sudo wget https://raw.githubusercontent.com/PrzemekGrygiel/F5xc-perf-l3-test-single/main/html/91k.html -O /var/www/html/91.html
 sudo systemctl enable nginx
 sudo systemctl start nginx
 echo $(uname -n) > /var/www/html/index.nginx-debian.html
