@@ -10,8 +10,7 @@ echo "15k"; wrk -s responses_code.lua --latency --timeout 60s -t 100 -c 650 -d 2
 echo "37k"; wrk -s responses_code.lua --latency --timeout 60s -t 100 -c 650 -d 2m http://example.com/37k.html -H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML,like Gecko) Chrome/99.0.4844.51 Safari/537.36" -H "Accept: */*"| grep -v 0,0,0 | tee -a 37k.txt &
 echo "91k"; wrk -s responses_code.lua --latency --timeout 60s -t 100 -c 650 -d 2m http://example.com/91k.html -H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML,like Gecko) Chrome/99.0.4844.51 Safari/537.36" -H "Accept: */*"| grep -v 0,0,0 | tee -a 91k.txt
 echo "##########################################################################################"
-
-
+sleep 10
 echo "################## HTTPS #################"
 echo "################## Run 135B #################"; wrk -s responses_code.lua --latency --timeout 60s -t 100 -c 2000 -d 2m https://example.com/135.html -H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML,like Gecko) Chrome/99.0.4844.51 Safari/537.36" -H "Accept: */*"| grep -v 0,0,0 | tee -a 135.txt &&
 sleep 2
