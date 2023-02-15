@@ -15,15 +15,24 @@ variable "key_path" {
 }
 
 variable aws_instance_type {
-  default = "c5n.4xlarge"
+  default = "c5n.2xlarge"
 }
 
 variable vm_instance_type {
-  default = "c5n.xlarge"
+  default = "c5n.4xlarge"
 }
 
+variable jump_instance_type {
+  default = "t3.large"
+}
+
+
 variable projectPrefix {
-  default = "pg-perf-test-aug29-single-l"
+  default = "pg-perf-test"
+}
+
+variable l3_mode {
+  default = true
 }
 
 # AWS 

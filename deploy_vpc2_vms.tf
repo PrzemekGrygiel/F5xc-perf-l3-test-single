@@ -14,7 +14,7 @@ resource "aws_instance" "pg-vpc2-vm1" {
   private_ip                           = "${var.pg_vpc2_az_a_workload_vm_ip}"
   source_dest_check                    = false
   tags = {
-    Name = "${var.projectPrefix}-az-a-vm2"
+    Name = "${var.projectPrefix}-vpc2-az-a-vm1"
   }
   connection {
     user        = "ubuntu"
@@ -25,7 +25,7 @@ resource "aws_instance" "pg-vpc2-vm1" {
 #!/bin/bash
 while ! ping -c 1 -n -w 1 8.8.8.8 &> /dev/null;do  printf "%c" "."; sleep 5; done
 sudo apt update
-sudo apt install nginx wrk libsctp1 -y 
+sudo apt install iperf3 nginx wrk libsctp1 -y 
 echo -e "net.core.rmem_max = 33554432\nnet.core.wmem_max = 33554432\nnet.ipv4.tcp_rmem = 4096 87380 33554432\nnet.ipv4.tcp_wmem = 4096 65536 33554432\nnet.core.netdev_max_backlog = 300000\nfs.file-max = 1048576\nnet.ipv4.tcp_tw_recycle = 1\nnet.ipv4.tcp_tw_reuse = 1\n"   >>  /etc/sysctl.conf 
 echo -e "*       soft    nofile  60000\n*       hard    nofile  120000" >> /etc/security/limits.conf
 echo -e "worker_rlimit_nofile 60000;" >> /etc/nginx/nginx.conf
@@ -50,7 +50,7 @@ resource "aws_instance" "pg-vpc2-jump" {
   ebs_optimized                        = false
   disable_api_termination              = false
   instance_initiated_shutdown_behavior = "stop"
-  instance_type                        = "${var.vm_instance_type}"
+  instance_type                        = "${var.jump_instance_type}"
   key_name                             = "${var.key_name}"
   monitoring                           = false
   vpc_security_group_ids               = [aws_security_group.pg-vpc2-external-sg.id]
